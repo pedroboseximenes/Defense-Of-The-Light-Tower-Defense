@@ -2,7 +2,6 @@ from PPlay.window import *
 from PPlay.gameimage import *
 from PPlay.sprite import *
 from PPlay.animation import *
-from torre import *
 from scorpion import *
 global money
 def cliquenatorre(teste,tempo,mouse,clique,money):
@@ -61,6 +60,7 @@ def game(janela):
                 1) and tempo >= 0.75 and clique == False and money >= 100):
             clique = True
             money -= 100
+
 
         #clique = cliquenatorre(teste,tempo,mouse,clique,money)
         clique = movimentotorre(lista, mouse, tempo, clique, teste,torre)

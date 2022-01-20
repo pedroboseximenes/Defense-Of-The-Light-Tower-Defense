@@ -3,7 +3,7 @@ from PPlay.gameimage import *
 from PPlay.sprite import *
 from game import *
 
-janela = Window(1080, 800)
+janela = Window(1080, 700)
 fundo = GameImage("imagens/game_background_1.jpg")
 janela.set_title("Defense of the Light")
 
