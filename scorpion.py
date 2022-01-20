@@ -3,8 +3,8 @@ from PPlay.sprite import *
 from pygame import *
 def scorpionanimation(janela):
     scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
-    scorpion.x = 1
-    scorpion.y = 400 - scorpion.height/2
+    scorpion.x = 100
+    scorpion.y = 375
     scorpion.set_sequence_time(0, 19, 50, True)
     return scorpion
 
