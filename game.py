@@ -30,21 +30,24 @@ def game(janela):
     money = 200
     estrela = GameImage("imagens/star.png")
     estrela.x, estrela.y = [920, 70]
-    vida = 20
+    vida = 4
     coracao = Sprite("imagens/heart.png", 1)
     coracao.x, coracao.y = [920, 10]
 
     botaoarqueiro = GameImage("imagens/ico_8.png")
     botaoarqueiro.x, botaoarqueiro.y = [970,300]
     clique = False
+
     torre = Animation("imagens/torrefeita.png",6)
     torre.set_sequence_time(0, 6, 1000, True)
+
     tiroarco = Sprite("imagens/arqueiro tower/37.png", 1)
     listatiro = []
     vida_scorpion = 100
     lista_scorpion = []
     listatorrereal = []
 
+    contadordescorpion = 0
 
     time = 0
     time2 = 0
@@ -66,10 +69,13 @@ def game(janela):
         """
         if vida <= 0:
             break
-        clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
-        lista_scorpion, time = scorpionanimation(janela, lista_scorpion, time)
+        listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
+
+
+        lista_scorpion, time, contadordescorpion = scorpionanimation(janela, lista_scorpion, time,contadordescorpion)
         vida = scorpionmovimento(lista_scorpion,janela,vida)
         listatiro, time2, money = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, vida_scorpion, janela, time2 ,tiroarco, money)
+        colisaotorrescorpion(listatorrereal, lista_scorpion)
 
         # desenhos:
         fundo.draw()
@@ -78,6 +84,7 @@ def game(janela):
             i.update()
         for i in listatorre:
             i.draw()
+            listatorre.remove(i)
             i.update()
 
         for j in listatiro:

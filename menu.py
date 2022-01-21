@@ -7,6 +7,7 @@ janela = Window(1080, 800)
 fundo = GameImage("imagens/game_background_1.jpg")
 janela.set_title("Defense of the Light")
 
+logo = GameImage("imagens/testelogo.png")
 
 jogar_button = Sprite("imagens/button_play.png", 1)
 
@@ -15,7 +16,10 @@ tempo = 0
 
 #coords:
 jogar_button.x = janela.width/2 - jogar_button.width/2
-jogar_button.y = janela.height/2 - jogar_button.height/2
+jogar_button.y = janela.height/2 - 50
+
+logo.x = janela.width/2 - logo.width/2
+logo.y = 7
 
 while True:
     #mecanicas:
@@ -24,5 +28,6 @@ while True:
             game(janela)
     #desenhos:
     fundo.draw()
+    logo.draw()
     jogar_button.draw()
     janela.update()

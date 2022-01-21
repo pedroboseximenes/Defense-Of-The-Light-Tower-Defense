@@ -11,9 +11,9 @@ def movimentotorre(listatorre,mouse,tempo,clique,teste,torre,listatorrereal):
         torre.x -= torre.width / 2
         torre.y -= torre.height / 2
         listatorre.append(torre)
-        if (mouse.is_button_pressed(3)):
+        if (mouse.is_button_pressed(3) and mouse.is_over_area):
             torre2.x = torre.x
             torre2.y = torre.y
             listatorrereal.append(torre2)
             clique = False
-    return clique
+    return listatorrereal,clique
