@@ -4,16 +4,17 @@ from PPlay.sprite import *
 def tirotorre(torre,lista_scorpion,listatorrereal,listatiro,vida_scorpion,janela,time2,tiroarco, money):
     for i in listatorrereal:
         tiroarco = Sprite("imagens/arqueiro tower/37.png", 1)
-        if time2 >= 2.5:
+        if time2 >= 5.5:
             if verificararea(listatorrereal,lista_scorpion):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
                 listatiro.append(tiroarco)
             time2 = 0
-        movimentodotiro(listatiro, lista_scorpion, janela)
-        money = colisaoarcoscorpion(listatiro,lista_scorpion,money)
+
 
     else:
         time2 += janela.delta_time()
+    movimentodotiro(listatiro, lista_scorpion, janela)
+    money = colisaoarcoscorpion(listatiro, lista_scorpion, money)
     return listatiro, time2 , money
 
 
@@ -42,10 +43,11 @@ def movimentodotiro(listatiro,lista_scorpion,janela):
             if i.y < j.y:
                 i.y += veldotiroarco * janela.delta_time()
             if i.x > j.x:
-                i.x += veldotiroarco * janela.delta_time()
+                i.x += veldotiroarco * janela.delta_time() * -1
             if i.x < j.x:
                 i.x -= veldotiroarco * janela.delta_time()
-
+        if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
+            listatiro.remove(i)
 
 def colisaoarcoscorpion(listatiro,lista_scorpion,money):
     for i in listatiro:

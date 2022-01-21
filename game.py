@@ -5,7 +5,8 @@ from PPlay.animation import *
 from PPlay.collision import *
 from torre import *
 from tiro import *
-global money
+from scorpion import *
+from random import randint
 """
 tirei o scorpion.py e coloquei no game.py na função abaixo
 """
@@ -15,52 +16,29 @@ def cliquenatorre(teste,tempo,mouse,clique,money):
 
     return clique
 
-def scorpionanimation(janela,lista_scorpion,time):
-    if time >= 5:
-        for i in range(1):
-            if len(lista_scorpion) >= 5:
-                break
-            scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
-            scorpion.x = 10
-            scorpion.y = 373
-            scorpion.set_sequence_time(0, 19, 50, True)
-            lista_scorpion.append(scorpion)
-        time = 0
-    else:
-        time += janela.delta_time()
-    return lista_scorpion, time
-
-def scorpionmovimento(lista_scorpion,janela):
-    for scorpion in lista_scorpion:
-
-        velMonstro = 80
-        if scorpion.x >= 0:
-            if scorpion.x < janela.height:
-                scorpion.x += velMonstro * janela.delta_time()
-        if scorpion.x > 690:
-            scorpion.y += velMonstro * janela.delta_time()
-
-
-
 def game(janela):
-    fundo = GameImage("imagens/FUNDO AREIA COMPLETO.jpg")
+    fundo = GameImage("imagens/fundo.png")
     janela.set_title("Defense of the Light")
 
     teclado = Window.get_keyboard()
     mouse = Window.get_mouse()
-    lista = []
+    listatorre = []
     tempo = 0
     """
-    dinheiro:
+    dinheiro e vida:
     """
     money = 200
+    estrela = GameImage("imagens/star.png")
+    estrela.x, estrela.y = [920, 70]
+    vida = 20
+    coracao = Sprite("imagens/heart.png", 1)
+    coracao.x, coracao.y = [920, 10]
 
-    teste = GameImage("imagens/ico_8.png")
-    teste.x, teste.y = [50,10]
-    coracao = GameImage("../Defense Of The Light 2/imagens/heart.png")
-    coracao.x,coracao.y = [500,10]
+    botaoarqueiro = GameImage("imagens/ico_8.png")
+    botaoarqueiro.x, botaoarqueiro.y = [970,300]
     clique = False
-    torre = Sprite("imagens/torrefeita.png",1)
+    torre = Animation("imagens/torrefeita.png",6)
+    torre.set_sequence_time(0, 6, 1000, True)
     tiroarco = Sprite("imagens/arqueiro tower/37.png", 1)
     listatiro = []
     vida_scorpion = 100
@@ -73,33 +51,43 @@ def game(janela):
 
     while True:
         tempo += janela.delta_time()
-        lista_scorpion, time = scorpionanimation(janela, lista_scorpion,time)
         # mecanicas:
         if (teclado.key_pressed("ESC")):
             break
         """
         vendo se ta sendo click e se te money
         """
-        if (mouse.is_over_object(teste) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
+        if (mouse.is_over_object(botaoarqueiro) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
             clique = True
             money -= 100
         ""
-        clique = movimentotorre(lista, mouse, tempo, clique, teste,torre,listatorrereal)
-        scorpionmovimento(lista_scorpion,janela)
+        """
+        vendo se tem vida ainda
+        """
+        if vida <= 0:
+            break
+        clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
+        lista_scorpion, time = scorpionanimation(janela, lista_scorpion, time)
+        vida = scorpionmovimento(lista_scorpion,janela,vida)
         listatiro, time2, money = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, vida_scorpion, janela, time2 ,tiroarco, money)
 
         # desenhos:
         fundo.draw()
         for i in listatorrereal:
             i.draw()
-        for i in lista:
+            i.update()
+        for i in listatorre:
             i.draw()
+            i.update()
+
         for j in listatiro:
             j.draw()
         for i in lista_scorpion:
             i.draw()
             i.update()
-        janela.draw_text(str(money), janela.width/2, 10, 27, (255, 0, 0), "Boulder", False, False)
-        teste.draw()
-
+        botaoarqueiro.draw()
+        janela.draw_text(str(money), 990, 70, 50, (1, 0, 0), "Boulder", False, False)
+        estrela.draw()
+        janela.draw_text(str(vida), 1000, 10, 50, (1, 0, 0), "Boulder", False, False)
+        coracao.draw()
         janela.update()
