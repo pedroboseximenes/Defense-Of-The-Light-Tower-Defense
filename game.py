@@ -86,7 +86,8 @@ def game(janela):
         ""
         clique = movimentotorre(lista, mouse, tempo, clique, teste,torre,listatorrereal)
         scorpionmovimento(lista_scorpion,janela)
-        listatiro, time2 = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, vida_scorpion, janela, time2 ,tiroarco)
+        listatiro, time2, money = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, vida_scorpion, janela, time2 ,tiroarco, money)
+
         # desenhos:
         fundo.draw()
         for i in listatorrereal:
