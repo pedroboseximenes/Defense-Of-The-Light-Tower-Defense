@@ -6,6 +6,9 @@ from PPlay.collision import *
 from torre import *
 from tiro import *
 global money
+"""
+tirei o scorpion.py e coloquei no game.py na função abaixo
+"""
 def cliquenatorre(teste,tempo,mouse,clique,money):
     if (mouse.is_over_object(teste) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
         clique = True
