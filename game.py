@@ -18,7 +18,7 @@ def cliquenatorre(teste,tempo,mouse,clique,money):
     return clique
 
 def game(janela):
-    fundo = GameImage("imagens/fundo.png")
+    fundo = GameImage("imagens/FundoFloresta.jpg")
     janela.set_title("Defense of the Light")
 
     teclado = Window.get_keyboard()
@@ -31,7 +31,7 @@ def game(janela):
     money = 200
     estrela = GameImage("imagens/star.png")
     estrela.x, estrela.y = [920, 70]
-    vida = 4
+    vida = 40
     coracao = Sprite("imagens/heart.png", 1)
     coracao.x, coracao.y = [920, 10]
 

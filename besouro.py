@@ -3,26 +3,23 @@ from PPlay.animation import *
 from random import *
 from pygame import *
 def besouroanimation(janela,lista_besouro,time,contadordebesouro):
-    if time >= 10:
+    if time >= 8:
         if contadordebesouro <= 20:
             besouro = Animation("imagens/besouropeludo.png", 10, True)
             besouro.set_sequence_time(0, 9, 40, True)
-            t = randint(1,5)
+            t = randint(1,4)
             if t == 1:
                 besouro.x = 3
-                besouro.y = 30
+                besouro.y = 140
             if t == 2:
                 besouro.x = 3
-                besouro.y = 200
+                besouro.y = 260
             if t == 3:
                 besouro.x = 3
-                besouro.y = 373
+                besouro.y = 450
             if t ==4:
                 besouro.x = 3
-                besouro.y = 550
-            if t == 5:
-                besouro.x = 3
-                besouro.y = 670
+                besouro.y = 680
             lista_besouro.append(besouro)
             contadordebesouro += 1
         time = 0
