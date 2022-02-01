@@ -6,6 +6,7 @@ from PPlay.collision import *
 from torre import *
 from tiro import *
 from scorpion import *
+from besouro import  *
 from random import randint
 """
 tirei o scorpion.py e coloquei no game.py na função abaixo
@@ -47,10 +48,15 @@ def game(janela):
     lista_scorpion = []
     listatorrereal = []
 
+    lista_besouro = []
+    contadordebesouro = 0
+
     contadordescorpion = 0
 
     time = 0
     time2 = 0
+    time3 = 0
+    timebesouro = 0
 
     while True:
         tempo += janela.delta_time()
@@ -74,8 +80,13 @@ def game(janela):
 
         lista_scorpion, time, contadordescorpion = scorpionanimation(janela, lista_scorpion, time,contadordescorpion)
         vida = scorpionmovimento(lista_scorpion,janela,vida)
-        listatiro, time2, money = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, vida_scorpion, janela, time2 ,tiroarco, money)
+        listatiro, time2, money = tirotorre(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money)
         colisaotorrescorpion(listatorrereal, lista_scorpion)
+
+        lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro)
+        vida = besouromovimento(lista_besouro, janela, vida)
+        listatiro, time2, money = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money)
+        colisaotorrebesouro(listatorrereal, lista_besouro)
 
         # desenhos:
         fundo.draw()
@@ -90,6 +101,9 @@ def game(janela):
         for j in listatiro:
             j.draw()
         for i in lista_scorpion:
+            i.draw()
+            i.update()
+        for i in lista_besouro:
             i.draw()
             i.update()
         botaoarqueiro.draw()
