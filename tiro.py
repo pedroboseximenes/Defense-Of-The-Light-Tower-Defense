@@ -1,7 +1,7 @@
 from PPlay.collision import *
 from PPlay.sprite import *
 
-def tirotorre(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money):
+def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money):
     tiroarco = Sprite("imagens/37.png", 1)
     if time2 >= 4.89:
         for i in listatorrereal:
@@ -16,9 +16,9 @@ def tirotorre(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarc
     return listatiro, time2 , money
 
 
-def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,vida_scorpion,janela,timeogrotorre,tiroarco, money):
+def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money):
     tiroarco = Sprite("imagens/37.png", 1)
-    if timeogrotorre >= 3:
+    if timeogrotorre >= 4.89:
         for i in listatorrereal:
             if verificararea(i,listatorrereal,lista_ogro):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -41,8 +41,8 @@ def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,t
         time3 = 0
     else:
         time3 += janela.delta_time()
-    movimentodotiro(listatiro, lista_besouro, janela)
     money = colisaoarcoscorpion(listatiro, lista_besouro, money)
+    movimentodotiro(listatiro, lista_besouro, janela)
     return listatiro, time3, money
 
 
@@ -64,9 +64,8 @@ def verificararea(i,listatorrereal,lista_scorpion):
 def movimentodotiro(listatiro,lista_scorpion,janela):
     veldotiroarco = 40
     for i in listatiro:
-        for j in lista_scorpion:
-            if 0 < i.x:
-                i.x += veldotiroarco * janela.delta_time() * -1
+        if 0 <= i.x:
+            i.x += veldotiroarco * janela.delta_time() * -1
         if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
             listatiro.remove(i)
 

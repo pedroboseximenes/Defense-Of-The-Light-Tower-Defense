@@ -2,12 +2,14 @@ from PPlay.sprite import *
 from PPlay.animation import *
 from random import *
 from pygame import *
-def scorpionanimation(janela,lista_scorpion,time,contadordescorpion):
-    if time >= 5:
-        if contadordescorpion <= 20:
+def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roundgame):
+    if timescorpion >= 4:
+        if contadordescorpion <= 2 * roundgame:
             scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
             scorpion.set_sequence_time(0, 19, 50, True)
             t = randint(1,4)
+            if contadordescorpion == 0 or contadordescorpion == 1:
+                t = 3
             if t == 1:
                 scorpion.x = 3
                 scorpion.y = 140
@@ -22,10 +24,10 @@ def scorpionanimation(janela,lista_scorpion,time,contadordescorpion):
                 scorpion.y = 680
             lista_scorpion.append(scorpion)
             contadordescorpion += 1
-        time = 0
+        timescorpion = 0
     else:
-        time += janela.delta_time()
-    return lista_scorpion, time, contadordescorpion
+        timescorpion += janela.delta_time()
+    return lista_scorpion, timescorpion, contadordescorpion
 
 def scorpionmovimento(lista_scorpion,janela,vida):
     for scorpion in lista_scorpion:

@@ -2,9 +2,9 @@ from PPlay.sprite import *
 from PPlay.animation import *
 from random import *
 from pygame import *
-def besouroanimation(janela,lista_besouro,time,contadordebesouro):
-    if time >= 8:
-        if contadordebesouro <= 20:
+def besouroanimation(janela,lista_besouro,time,contadordebesouro, roundgame):
+    if time >= 18:
+        if contadordebesouro <= 3 * roundgame:
             besouro = Animation("imagens/besouropeludo.png", 10, True)
             besouro.set_sequence_time(0, 9, 40, True)
             t = randint(1,4)
@@ -43,3 +43,4 @@ def colisaotorrebesouro(listatorrereal, lista_besouro):
         for j in lista_besouro:
             if j.collided(i):
                 listatorrereal.remove(i)
+                lista_besouro.remove(j)

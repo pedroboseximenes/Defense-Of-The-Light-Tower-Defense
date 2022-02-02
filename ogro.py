@@ -1,8 +1,8 @@
 from PPlay.animation import *
 from random import *
-def ogroanimation(janela,lista_ogro,time,contadordeogro):
-    if time >= 8:
-        if contadordeogro <= 20:
+def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame):
+    if time >= 10:
+        if contadordeogro <= 4 * roundgame:
             ogro = Animation("imagens/ogro.png", 20, True)
             ogro.set_sequence_time(0, 19, 70, True)
             t = randint(1, 4)
