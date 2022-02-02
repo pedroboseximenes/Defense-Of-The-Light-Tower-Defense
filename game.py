@@ -5,6 +5,8 @@ from besouro import *
 from ogro import *
 from torremago import *
 from tiromago import *
+from torredefesa import *
+from torredefesamecanica import *
 from random import randint
 def cliquenatorre(teste,tempo,mouse,clique,money):
     if (mouse.is_over_object(teste) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
@@ -22,12 +24,18 @@ def game(janela):
     """
     dinheiro e vida:
     """
-    money = 200
+    money = 500
     estrela = GameImage("imagens/star.png")
     estrela.x, estrela.y = [920, 70]
     vida = 40
     coracao = Sprite("imagens/heart.png", 1)
     coracao.x, coracao.y = [920, 10]
+    """
+    preço das torres embaixo delas
+    """
+    precoarqueiro = GameImage("imagens/crystal_1.png")
+    precomago = GameImage("imagens/crystal_1.png")
+    precodefesa = GameImage("imagens/crystal_1.png")
     """
     torres !!!!!!!!!!!!
     """
@@ -38,13 +46,22 @@ def game(janela):
     lista_torre_mago = []
     torremago = Sprite("imagens/magic-1.png",1)
     lista_torre_mago_real = []
+    lista_torre_defesa = []
+    torredefesa = Sprite("imagens/7.png",1)
+    lista_torre_defesa_real = []
+    listavidastorresdefesa = []
 
     botaoarqueiro = GameImage("imagens/ico_8.png")
     botaoarqueiro.x, botaoarqueiro.y = [970,300]
     botaomago = GameImage("imagens/ico_18.png")
     botaomago.x, botaomago.y = [970,400]
+    botaodefesa = GameImage("imagens/ico_2.png")
+    botaodefesa.x, botaodefesa.y = [970, 200]
+
+
     clique = False
     cliquemago = False
+    cliquedefesa = False
 
     roundgame = 1
 
@@ -96,6 +113,9 @@ def game(janela):
         if (mouse.is_over_object(botaomago) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquemago == False and money >= 200):
             cliquemago = True
             money -= 200
+        if (mouse.is_over_object(botaodefesa) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquedefesa == False and money >= 200):
+            cliquedefesa = True
+            money -= 500
         """
         vendo se tem vida ainda
         """
@@ -108,6 +128,7 @@ def game(janela):
             contadordebesouro = 0
 
         listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
+        lista_torre_defesa_real, cliquedefesa, listavidastorresdefesa = movimentotorredefesa(lista_torre_defesa_real,cliquedefesa,mouse,lista_torre_defesa, torredefesa, listavidastorresdefesa)
         lista_torre_mago_real, cliquemago = movimentotorremago(lista_torre_mago_real,cliquemago,mouse,lista_torre_mago, torremago)
 
         lista_scorpion, timescorpion, contadordescorpion = scorpionanimation(janela, lista_scorpion, timescorpion,contadordescorpion, roundgame)
@@ -117,6 +138,7 @@ def game(janela):
         lista_raio_mago,timemago, money = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money)
         colisaotorrescorpion(listatorrereal, lista_scorpion)
         colisaotorrescorpion(lista_torre_mago_real, lista_scorpion)
+        listavidastorresdefesa, money = colisaotorredefesascorpion(lista_torre_defesa_real, lista_scorpion, listavidastorresdefesa, money)
 
         lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro, roundgame)
         vida = besouromovimento(lista_besouro, janela, vida)
@@ -124,6 +146,8 @@ def game(janela):
         lista_raio_mago,timemago3, money = raiomagobesouro(lista_besouro, janela, lista_raio_mago, lista_torre_mago_real, timemago3, money)
         colisaotorrebesouro(listatorrereal, lista_besouro)
         colisaotorrebesouro(lista_torre_mago_real, lista_besouro)
+        listavidastorresdefesa, money = colisaotorredefesabesouro(lista_torre_defesa_real, lista_besouro, listavidastorresdefesa, money)
+
 
         lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame)
         vida = ogromovimento(lista_ogro, janela, vida)
@@ -131,6 +155,7 @@ def game(janela):
         lista_raio_mago, timemago2, money = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money)
         colisaotorreogro(listatorrereal, lista_ogro)
         colisaotorreogro(lista_torre_mago_real, lista_ogro)
+        listavidastorresdefesa, money = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money)
 
         # desenhos:
         fundo.draw()
@@ -146,6 +171,11 @@ def game(janela):
         for i in lista_torre_mago:
             i.draw()
             lista_torre_mago.remove(i)
+        for i in lista_torre_defesa:
+            i.draw()
+            lista_torre_defesa.remove(i)
+        for i in lista_torre_defesa_real:
+            i.draw()
 
         for j in listatiro:
             j.draw()
@@ -166,6 +196,7 @@ def game(janela):
 
         botaoarqueiro.draw()
         botaomago.draw()
+        botaodefesa.draw()
         janela.draw_text(str(money), 990, 70, 50, (1, 0, 0), "Boulder", False, False)
         estrela.draw()
         janela.draw_text(str(vida), 1000, 10, 50, (1, 0, 0), "Boulder", False, False)
