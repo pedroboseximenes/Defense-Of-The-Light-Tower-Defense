@@ -6,7 +6,8 @@ from PPlay.collision import *
 from torre import *
 from tiro import *
 from scorpion import *
-from besouro import  *
+from besouro import *
+from ogro import *
 from random import randint
 """
 tirei o scorpion.py e coloquei no game.py na função abaixo
@@ -42,16 +43,22 @@ def game(janela):
     torre = Animation("imagens/torrefeita.png",6)
     torre.set_sequence_time(0, 6, 1000, True)
 
-    tiroarco = Sprite("imagens/arqueiro tower/37.png", 1)
+    tiroarco = Sprite("imagens/37.png", 1)
     listatiro = []
     vida_scorpion = 100
     lista_scorpion = []
     listatorrereal = []
 
     lista_besouro = []
-    contadordebesouro = 0
+    lista_ogro = []
 
+    contadordebesouro = 0
+    contadordeogro = 0
     contadordescorpion = 0
+
+
+    timeogro = 0
+    timeogrotorre = 0
 
     time = 0
     time2 = 0
@@ -75,8 +82,8 @@ def game(janela):
         """
         if vida <= 0:
             break
-        listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
 
+        listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
 
         lista_scorpion, time, contadordescorpion = scorpionanimation(janela, lista_scorpion, time,contadordescorpion)
         vida = scorpionmovimento(lista_scorpion,janela,vida)
@@ -87,6 +94,11 @@ def game(janela):
         vida = besouromovimento(lista_besouro, janela, vida)
         listatiro, time2, money = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money)
         colisaotorrebesouro(listatorrereal, lista_besouro)
+
+        lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro)
+        vida = ogromovimento(lista_ogro, janela, vida)
+        listatiro, timeogrotorre, money = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, vida_scorpion, janela, timeogrotorre, tiroarco, money)
+        colisaotorreogro(listatorrereal, lista_ogro)
 
         # desenhos:
         fundo.draw()
@@ -100,6 +112,10 @@ def game(janela):
 
         for j in listatiro:
             j.draw()
+
+        for i in lista_ogro:
+            i.draw()
+            i.update()
         for i in lista_scorpion:
             i.draw()
             i.update()

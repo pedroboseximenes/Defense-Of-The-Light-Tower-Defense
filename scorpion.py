@@ -29,8 +29,7 @@ def scorpionanimation(janela,lista_scorpion,time,contadordescorpion):
 
 def scorpionmovimento(lista_scorpion,janela,vida):
     for scorpion in lista_scorpion:
-
-        velMonstro = 80
+        velMonstro = 68
         if scorpion.x >= 0:
             scorpion.x += velMonstro * janela.delta_time()
         if scorpion.x > scorpion.height + 1000:

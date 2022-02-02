@@ -43,4 +43,3 @@ def colisaotorrebesouro(listatorrereal, lista_besouro):
         for j in lista_besouro:
             if j.collided(i):
                 listatorrereal.remove(i)
-                lista_besouro.remove(j)
