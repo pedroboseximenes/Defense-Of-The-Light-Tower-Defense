@@ -8,6 +8,7 @@ from tiromago import *
 from torredefesa import *
 from torredefesamecanica import *
 from vitoriaouderrota import *
+from arthemis import *
 from random import randint
 
 
@@ -43,6 +44,8 @@ def game(janela,fase):
     elif fase == 3:
         fundo = GameImage("imagens/FundoNeve.jpg")
         janela.set_title("Defense of the Light")
+        arthemis  = arthemisanimation(janela)
+
 
     teclado = Window.get_keyboard()
     mouse = Window.get_mouse()
@@ -115,6 +118,7 @@ def game(janela,fase):
     contadorogromorto = 0
     contadorbesouromorto = 0
 
+    vidaarthemis = 0
 
     timeogro = 0
     timescorpion = 0
@@ -220,13 +224,11 @@ def game(janela,fase):
             lista_torre_defesa.remove(i)
         for i in lista_torre_defesa_real:
             i.draw()
-
         for j in listatiro:
             j.draw()
         for i in lista_raio_mago:
             i.draw()
             i.update()
-
         for i in lista_ogro:
             i.draw()
             i.update()
@@ -236,6 +238,14 @@ def game(janela,fase):
         for i in lista_besouro:
             i.draw()
             i.update()
+        if fase == 3:
+            arthemis.draw()
+            arthemis.update()
+            vida = arthemismovimento(arthemis, janela, vida)
+            vidaarthemis = colisaotorrearthemis(listatorrereal, arthemis, vidaarthemis)
+
+            if vidaarthemis >5:
+                arthemis = arthemisanimation(janela)
 
 
         botaoarqueiro.draw()

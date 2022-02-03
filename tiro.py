@@ -78,3 +78,12 @@ def colisaoarcoscorpion(listatiro,lista_scorpion,money, contadorscorpionmorto):
                 listatiro.remove(i)
                 contadorscorpionmorto += 1
     return money, contadorscorpionmorto
+
+
+def colisaoarcoarthemis(listatiro,arthemis,money, vidaarthemis):
+    for i in listatiro:
+        if arthemis.collided(i):
+                money += 100
+                vidaarthemis += 1
+                listatiro.remove(i)
+    return money, vidaarthemis

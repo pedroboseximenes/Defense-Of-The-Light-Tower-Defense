@@ -6,7 +6,7 @@ def fases(janela, mouse, teclado):
     fundo = GameImage("imagens/game_background_1.jpg")
     janela.set_title("Defense of the Light")
     mapa1 = GameImage("imagens/num_1.png")
-    mapa2= GameImage("imagens/num_.png")
+    mapa2 = GameImage("imagens/num_.png")
     mapa3 = GameImage("imagens/num_3.png")
     mapa1_play = GameImage("imagens/button_play.png")
     mapa2_play = GameImage("imagens/button_play.png")

@@ -67,7 +67,6 @@ def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roun
                 if t == 2:
                     scorpion.x = 3
                     scorpion.y = 100
-
                 if t == 3:
                     scorpion.x = 3
                     scorpion.y = 236

@@ -81,3 +81,4 @@ def colisaoraiomob(lista_raio_mago,lista_scorpion,money, contadorscorpionmorto):
                 lista_raio_mago.remove(i)
                 contadorscorpionmorto += 1
     return money, contadorscorpionmorto
+
