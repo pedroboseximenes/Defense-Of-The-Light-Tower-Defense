@@ -1,7 +1,7 @@
 from PPlay.collision import *
 from PPlay.sprite import *
 
-def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money):
+def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money, contadorscorpionmorto):
     tiroarco = Sprite("imagens/37.png", 1)
     if time2 >= 4.89:
         for i in listatorrereal:
@@ -12,11 +12,11 @@ def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2
     else:
         time2 += janela.delta_time()
     movimentodotiro(listatiro, lista_scorpion, janela)
-    money = colisaoarcoscorpion(listatiro, lista_scorpion, money)
-    return listatiro, time2 , money
+    money, contadorscorpionmorto = colisaoarcoscorpion(listatiro, lista_scorpion, money, contadorscorpionmorto)
+    return listatiro, time2 , money, contadorscorpionmorto
 
 
-def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money):
+def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money, contadorogromorto):
     tiroarco = Sprite("imagens/37.png", 1)
     if timeogrotorre >= 4.89:
         for i in listatorrereal:
@@ -27,11 +27,11 @@ def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre
     else:
         timeogrotorre += janela.delta_time()
     movimentodotiro(listatiro, lista_ogro, janela)
-    money = colisaoarcoscorpion(listatiro, lista_ogro, money)
-    return listatiro, timeogrotorre , money
+    money, contadorogromorto = colisaoarcoscorpion(listatiro, lista_ogro, money, contadorogromorto)
+    return listatiro, timeogrotorre , money , contadorogromorto
 
 
-def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,tiroarco, money):
+def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,tiroarco, money, contadorbesouromorto):
     tiroarco = Sprite("imagens/37.png", 1)
     if time3 >= 4.89:
         for i in listatorrereal:
@@ -41,9 +41,9 @@ def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,t
         time3 = 0
     else:
         time3 += janela.delta_time()
-    money = colisaoarcoscorpion(listatiro, lista_besouro, money)
+    money, contadorbesouromorto = colisaoarcoscorpion(listatiro, lista_besouro, money, contadorbesouromorto)
     movimentodotiro(listatiro, lista_besouro, janela)
-    return listatiro, time3, money
+    return listatiro, time3, money, contadorbesouromorto
 
 
 def desenhartiro(listatiro):
@@ -69,11 +69,12 @@ def movimentodotiro(listatiro,lista_scorpion,janela):
         if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
             listatiro.remove(i)
 
-def colisaoarcoscorpion(listatiro,lista_scorpion,money):
+def colisaoarcoscorpion(listatiro,lista_scorpion,money, contadorscorpionmorto):
     for i in listatiro:
         for j in lista_scorpion:
             if i.collided(j):
                 money += 100
                 lista_scorpion.remove(j)
                 listatiro.remove(i)
-    return money
+                contadorscorpionmorto += 1
+    return money, contadorscorpionmorto

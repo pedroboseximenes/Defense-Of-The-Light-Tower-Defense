@@ -4,7 +4,7 @@ from random import *
 from pygame import *
 def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roundgame):
     if timescorpion >= 4:
-        if contadordescorpion <= 2 * roundgame:
+        if contadordescorpion < 2 + roundgame:
             scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
             scorpion.set_sequence_time(0, 19, 50, True)
             t = randint(1,4)
@@ -39,9 +39,11 @@ def scorpionmovimento(lista_scorpion,janela,vida):
             vida -= 2
     return vida
 
-def colisaotorrescorpion(listatorrereal, lista_scorpions):
+def colisaotorrescorpion(listatorrereal, lista_scorpions, contadorscorpionmorto):
     for i in listatorrereal:
         for j in lista_scorpions:
             if j.collided(i):
                 listatorrereal.remove(i)
                 lista_scorpions.remove(j)
+                contadorscorpionmorto += 1
+    return contadorscorpionmorto

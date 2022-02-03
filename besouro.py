@@ -4,7 +4,7 @@ from random import *
 from pygame import *
 def besouroanimation(janela,lista_besouro,time,contadordebesouro, roundgame):
     if time >= 18:
-        if contadordebesouro <= 3 * roundgame:
+        if contadordebesouro < 2 + roundgame:
             besouro = Animation("imagens/besouropeludo.png", 10, True)
             besouro.set_sequence_time(0, 9, 40, True)
             t = randint(1,4)
@@ -38,9 +38,11 @@ def besouromovimento(lista_besouro,janela,vida):
             vida -= 2
     return vida
 
-def colisaotorrebesouro(listatorrereal, lista_besouro):
+def colisaotorrebesouro(listatorrereal, lista_besouro, contadorbesouromorto):
     for i in listatorrereal:
         for j in lista_besouro:
             if j.collided(i):
                 listatorrereal.remove(i)
                 lista_besouro.remove(j)
+                contadorbesouromorto += 1
+    return contadorbesouromorto

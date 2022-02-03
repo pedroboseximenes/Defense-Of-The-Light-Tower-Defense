@@ -2,7 +2,7 @@ from PPlay.window import *
 from PPlay.gameimage import *
 from PPlay.sprite import *
 from game import *
-from trailer import *
+
 def trailer(janela,teclado):
     if (teclado.key_pressed("ESC")):
         menu()

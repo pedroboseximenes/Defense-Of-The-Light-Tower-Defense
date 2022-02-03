@@ -1,7 +1,7 @@
 from PPlay.animation import *
 from PPlay.sprite import *
 
-def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money):
+def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
     if timemago >= 4.89:
@@ -13,11 +13,11 @@ def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real
     else:
         timemago += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_scorpion, janela)
-    money = colisaoraiomob(lista_raio_mago, lista_scorpion, money)
-    return lista_raio_mago, timemago , money
+    money, contadorscorpionmorto = colisaoraiomob(lista_raio_mago, lista_scorpion, money, contadorscorpionmorto)
+    return lista_raio_mago, timemago , money, contadorscorpionmorto
 
 
-def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money):
+def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
     if timemago2 >= 4.89:
@@ -29,11 +29,11 @@ def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemag
     else:
         timemago2 += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_ogro, janela)
-    money = colisaoraiomob(lista_raio_mago, lista_ogro, money)
-    return lista_raio_mago, timemago2, money
+    money, contadorogromorto = colisaoraiomob(lista_raio_mago, lista_ogro, money,contadorogromorto)
+    return lista_raio_mago, timemago2, money, contadorogromorto
 
 
-def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,timemago3,money):
+def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,timemago3,money, contadorbesouromorto):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
     if timemago3 >= 4.89:
@@ -45,8 +45,8 @@ def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,t
     else:
         timemago3 += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_besouro, janela)
-    money = colisaoraiomob(lista_raio_mago, lista_besouro, money)
-    return lista_raio_mago, timemago3, money
+    money, contadorbesouromorto = colisaoraiomob(lista_raio_mago, lista_besouro, money, contadorbesouromorto)
+    return lista_raio_mago, timemago3, money, contadorbesouromorto
 
 """"
 def desenhartiro(listatiro):
@@ -72,11 +72,12 @@ def movimentodotiro(lista_raio_mago,lista_scorpion,janela):
         if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
             lista_raio_mago.remove(i)
 
-def colisaoraiomob(lista_raio_mago,lista_scorpion,money):
+def colisaoraiomob(lista_raio_mago,lista_scorpion,money, contadorscorpionmorto):
     for i in lista_raio_mago:
         for j in lista_scorpion:
             if i.collided(j):
                 money += 150
                 lista_scorpion.remove(j)
                 lista_raio_mago.remove(i)
-    return money
+                contadorscorpionmorto += 1
+    return money, contadorscorpionmorto

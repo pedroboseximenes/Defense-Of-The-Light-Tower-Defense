@@ -2,7 +2,7 @@ from PPlay.animation import *
 from random import *
 def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame):
     if time >= 10:
-        if contadordeogro <= 4 * roundgame:
+        if contadordeogro < 3 + roundgame:
             ogro = Animation("imagens/ogro.png", 20, True)
             ogro.set_sequence_time(0, 19, 70, True)
             t = randint(1, 4)
@@ -35,9 +35,11 @@ def ogromovimento(lista_ogro,janela,vida):
             vida -= 2
     return vida
 
-def colisaotorreogro(listatorrereal, lista_ogro):
+def colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto):
     for i in listatorrereal:
         for j in lista_ogro:
             if j.collided(i):
                 listatorrereal.remove(i)
                 lista_ogro.remove(j)
+                contadorogromorto += 1
+    return contadorogromorto
