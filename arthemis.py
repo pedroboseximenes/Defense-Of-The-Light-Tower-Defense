@@ -23,7 +23,7 @@ def arthemismovimento(arthemis,janela,vida):
     velarthemis = 20
     if arthemis.x >= 0:
         arthemis.x += velarthemis * janela.delta_time()
-    if arthemis.x > arthemis.height + 1000:
+    if arthemis.x > arthemis.height +877:
         vida -= 50
     return vida
 
@@ -31,5 +31,18 @@ def colisaotorrearthemis(listatorrereal, arthemis, vidaarthemis):
     for i in listatorrereal:
         if arthemis.collided(i):
             listatorrereal.remove(i)
+            vidaarthemis += 1
+    return vidaarthemis
+
+def colisaotorremagoarthemis(lista_torre_mago_real, arthemis, vidaarthemis):
+    for i in lista_torre_mago_real:
+        if arthemis.collided(i):
+            lista_torre_mago_real.remove(i)
+            vidaarthemis += 1
+    return vidaarthemis
+def colisaotorredefesaarthemis(lista_torre_defesa_real, arthemis, vidaarthemis):
+    for i in lista_torre_defesa_real:
+        if arthemis.collided(i):
+            lista_torre_defesa_real.remove(i)
             vidaarthemis += 1
     return vidaarthemis

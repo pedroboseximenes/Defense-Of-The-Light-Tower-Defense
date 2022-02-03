@@ -11,27 +11,9 @@ from vitoriaouderrota import *
 from arthemis import *
 from random import randint
 
-
-def ganhar(janela,mouse):
-    fundo = GameImage("imagens/game_background_1.jpg")
-    janela.set_title("Defense of the Light")
-    ganhou = GameImage("imagens/header_win.png")
-    ganhou.x, ganhou.y = [janela.width / 2 - ganhou.width / 2, janela.height / 2 - ganhou.height / 2]
-    restart = GameImage("imagens/button_restart.png")
-    restart.x, restart.y = [10, 600]
-    while True:
-        if (mouse.is_button_pressed(1)):
-            if (mouse.is_over_object(restart)):
-                break
-        fundo.draw()
-        ganhou.draw()
-        restart.draw()
-        janela.update()
-
 def cliquenatorre(teste,tempo,mouse,clique,money):
     if (mouse.is_over_object(teste) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
         clique = True
-
     return clique
 
 def game(janela,fase):
@@ -44,8 +26,6 @@ def game(janela,fase):
     elif fase == 3:
         fundo = GameImage("imagens/FundoNeve.jpg")
         janela.set_title("Defense of the Light")
-        arthemis  = arthemisanimation(janela)
-
 
     teclado = Window.get_keyboard()
     mouse = Window.get_mouse()
@@ -53,7 +33,7 @@ def game(janela,fase):
     """
     dinheiro e vida:
     """
-    money = 500
+    money = 300 + (100 * fase)
     estrela = GameImage("imagens/star.png")
     estrela.x, estrela.y = [920, 70]
     vida = 10 * fase
@@ -119,6 +99,9 @@ def game(janela,fase):
     contadorbesouromorto = 0
 
     vidaarthemis = 0
+    arthemisvivo = True
+    mudancaarthemis = 0
+    arthemis = arthemisanimation(janela)
 
     timeogro = 0
     timescorpion = 0
@@ -127,12 +110,14 @@ def game(janela,fase):
     TEMPO UTILIZADO P FLECHA SER CRIADA, ABAIXO:
     """
     timeogrotorre = 0
+    timetorrearthemis = 0
     time2 = 0
     time3 = 0
     """
     TEMPO UTILIZADO P RAIO SER CRIADO, ABAIXO:
     """
     timemago2 = 0
+    timemagoarthemis = 0
     timemago = 0
     timemago3 = 0
 
@@ -163,24 +148,41 @@ def game(janela,fase):
         if vida <= 0:
             perdeu(janela, mouse)
             break
-        if roundgame == 3:
-            ganhar(janela,mouse)
+        if roundgame == 4:
+            ganhar(janela, mouse)
             break
-        if contadorscorpionmorto == (2 + roundgame) and contadorbesouromorto == (2+roundgame) and contadorogromorto == (3+roundgame):
-            roundgame += 1
-            contadordescorpion = 0
-            contadordeogro = 0
-            contadordebesouro = 0
-            contadorbesouromorto = 0
-            contadorogromorto = 0
-            contadorscorpionmorto = 0
+        if fase == 1:
+            if contadorscorpionmorto == (2 + roundgame) and contadorbesouromorto == (2+roundgame):
+                roundgame += 1
+                contadordescorpion = 0
+                contadordebesouro = 0
+                contadorbesouromorto = 0
+                contadorscorpionmorto = 0
+        if fase == 2:
+            if contadorscorpionmorto == (2 * roundgame) and contadorbesouromorto == (2 * roundgame) and contadorogromorto == (3 * roundgame):
+                roundgame += 1
+                contadordescorpion = 0
+                contadordebesouro = 0
+                contadordeogro = 0
+                contadorbesouromorto = 0
+                contadorogromorto = 0
+                contadorscorpionmorto = 0
+        if fase == 3:
+            if contadorscorpionmorto == (4 * roundgame) and contadorbesouromorto == (3 * roundgame) and contadorogromorto == (3  * roundgame):
+                roundgame += 1
+                contadordescorpion = 0
+                contadordebesouro = 0
+                contadordeogro = 0
+                contadorbesouromorto = 0
+                contadorogromorto = 0
+                contadorscorpionmorto = 0
 
         listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
         lista_torre_defesa_real, cliquedefesa, listavidastorresdefesa = movimentotorredefesa(lista_torre_defesa_real,cliquedefesa,mouse,lista_torre_defesa, torredefesa, listavidastorresdefesa)
         lista_torre_mago_real, cliquemago = movimentotorremago(lista_torre_mago_real,cliquemago,mouse,lista_torre_mago, torremago)
 
         lista_scorpion, timescorpion, contadordescorpion = scorpionanimation(janela, lista_scorpion, timescorpion,contadordescorpion, roundgame,fase)
-        vida = scorpionmovimento(lista_scorpion,janela,vida)
+        vida, contadorscorpionmorto = scorpionmovimento(lista_scorpion,janela,vida, contadorscorpionmorto)
         listatiro, time2, money, contadorscorpionmorto = tirotorrescorpion(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money, contadorscorpionmorto)
         ##mago
         lista_raio_mago,timemago, money, contadorscorpionmorto = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorscorpionmorto)
@@ -189,23 +191,25 @@ def game(janela,fase):
         listavidastorresdefesa, money, contadorscorpionmorto = colisaotorredefesascorpion(lista_torre_defesa_real, lista_scorpion, listavidastorresdefesa, money, contadorscorpionmorto)
 
         lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro, roundgame, fase)
-        vida = besouromovimento(lista_besouro, janela, vida)
+        vida, contadorbesouromorto = besouromovimento(lista_besouro, janela, vida, contadorbesouromorto)
         listatiro, time2, money, contadorbesouromorto = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money, contadorbesouromorto)
         lista_raio_mago,timemago3, money, contadorbesouromorto = raiomagobesouro(lista_besouro, janela, lista_raio_mago, lista_torre_mago_real, timemago3, money, contadorbesouromorto)
         contadorbesouromorto = colisaotorrebesouro(listatorrereal, lista_besouro, contadorbesouromorto)
         contadorbesouromorto = colisaotorrebesouro(lista_torre_mago_real, lista_besouro, contadorbesouromorto)
         listavidastorresdefesa, money, contadorbesouromorto = colisaotorredefesabesouro(lista_torre_defesa_real, lista_besouro, listavidastorresdefesa, money, contadorbesouromorto)
 
+        if fase == 2 or fase == 3:
+            lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase)
+            vida, contadorogromorto = ogromovimento(lista_ogro, janela, vida, contadorogromorto)
+            listatiro, timeogrotorre, money, contadorogromorto = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto)
+            lista_raio_mago, timemago2, money, contadorogromorto = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto)
+            contadorogromorto = colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto)
+            contadorogromorto = colisaotorreogro(lista_torre_mago_real, lista_ogro, contadorogromorto)
+            listavidastorresdefesa, money, contadorogromorto = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money, contadorogromorto)
 
-        lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase)
-        vida = ogromovimento(lista_ogro, janela, vida)
-        listatiro, timeogrotorre, money, contadorogromorto = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto)
-        lista_raio_mago, timemago2, money, contadorogromorto = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto)
-        contadorogromorto = colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto)
-        contadorogromorto = colisaotorreogro(lista_torre_mago_real, lista_ogro, contadorogromorto)
-        listavidastorresdefesa, money, contadorogromorto = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money, contadorogromorto)
 
         # desenhos:
+
         fundo.draw()
         for i in listatorrereal:
             i.draw()
@@ -224,29 +228,38 @@ def game(janela,fase):
             lista_torre_defesa.remove(i)
         for i in lista_torre_defesa_real:
             i.draw()
+
         for j in listatiro:
             j.draw()
         for i in lista_raio_mago:
             i.draw()
             i.update()
-        for i in lista_ogro:
-            i.draw()
-            i.update()
+
         for i in lista_scorpion:
             i.draw()
             i.update()
         for i in lista_besouro:
             i.draw()
             i.update()
-        if fase == 3:
+        for i in lista_ogro:
+            i.draw()
+            i.update()
+        if fase == 3 and arthemisvivo == True and roundgame >= 3:
             arthemis.draw()
             arthemis.update()
             vida = arthemismovimento(arthemis, janela, vida)
             vidaarthemis = colisaotorrearthemis(listatorrereal, arthemis, vidaarthemis)
+            vidaarthemis = colisaotorremagoarthemis(lista_torre_mago_real, arthemis, vidaarthemis)
+            vidaarthemis = colisaotorredefesaarthemis(lista_torre_defesa_real, arthemis, vidaarthemis)
+            listatiro , timetorrearthemis, money, vidaarthemis = tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,timetorrearthemis,tiroarco, money, vidaarthemis)
+            lista_raio_mago, timemagoarthemis, money, vidaarthemis = raiomagoarthemis(arthemis, janela, lista_raio_mago, lista_torre_mago_real, timemagoarthemis, money, vidaarthemis)
 
-            if vidaarthemis >5:
+            if vidaarthemis > 5:
                 arthemis = arthemisanimation(janela)
-
+                vidaarthemis = 0
+                mudancaarthemis += 1
+            if mudancaarthemis == 3:
+                arthemisvivo = False
 
         botaoarqueiro.draw()
         botaomago.draw()
@@ -254,12 +267,12 @@ def game(janela,fase):
         precoarqueiro.draw()
         precomago.draw()
         precodefesa.draw()
-
         janela.draw_text(str(money), 990, 70, 50, (1, 0, 0), "Boulder", False, False)
         estrela.draw()
         janela.draw_text(str(vida), 1000, 10, 50, (1, 0, 0), "Boulder", False, False)
         coracao.draw()
-        janela.draw_text(str(roundgame), janela.width/2, 10, 50, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str(roundgame), janela.width/2, 10, 40, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str("ROUND:"), janela.width/2- 120, 15, 40, (1, 0, 0), "Boulder", False, False)
 
         janela.draw_text(str(valoraqueiro), 975, 360, 25, (1, 0, 0), "Boulder", False, False)
         janela.draw_text(str(valormago), 975, 460, 25, (1, 0, 0), "Boulder", False, False)

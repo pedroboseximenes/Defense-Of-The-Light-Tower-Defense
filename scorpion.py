@@ -31,7 +31,7 @@ def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roun
         return lista_scorpion, timescorpion, contadordescorpion
     elif fase == 2:
         if timescorpion >= 4:
-            if contadordescorpion < 2 + roundgame:
+            if contadordescorpion < 2 * roundgame:
                 scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
                 scorpion.set_sequence_time(0, 19, 50, True)
                 t = randint(1, 4)
@@ -57,7 +57,7 @@ def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roun
         return lista_scorpion, timescorpion, contadordescorpion
     elif fase == 3:
         if timescorpion >= 4:
-            if contadordescorpion < 2 + roundgame:
+            if contadordescorpion < 4 * roundgame:
                 scorpion = Animation("imagens/escopion_andando_metade.png", 20, True)
                 scorpion.set_sequence_time(0, 19, 50, True)
                 t = randint(1, 6)
@@ -67,6 +67,7 @@ def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roun
                 if t == 2:
                     scorpion.x = 3
                     scorpion.y = 100
+
                 if t == 3:
                     scorpion.x = 3
                     scorpion.y = 236
@@ -86,15 +87,16 @@ def scorpionanimation(janela,lista_scorpion,timescorpion,contadordescorpion,roun
             timescorpion += janela.delta_time()
         return lista_scorpion, timescorpion, contadordescorpion
 
-def scorpionmovimento(lista_scorpion,janela,vida):
+def scorpionmovimento(lista_scorpion,janela,vida, contadorscorpionmorto):
     for scorpion in lista_scorpion:
-        velMonstro = 68
+        velMonstro = 60
         if scorpion.x >= 0:
             scorpion.x += velMonstro * janela.delta_time()
         if scorpion.x > scorpion.height + 1000:
             lista_scorpion.remove(scorpion)
-            vida -= 2
-    return vida
+            vida -= 1
+            contadorscorpionmorto += 1
+    return vida , contadorscorpionmorto
 
 def colisaotorrescorpion(listatorrereal, lista_scorpions, contadorscorpionmorto):
     for i in listatorrereal:

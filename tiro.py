@@ -45,11 +45,28 @@ def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,t
     movimentodotiro(listatiro, lista_besouro, janela)
     return listatiro, time3, money, contadorbesouromorto
 
+def tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,time3,tiroarco, money, vidaarthemis):
+    tiroarco = Sprite("imagens/37.png", 1)
+    if time3 >= 4.89:
+        for i in listatorrereal:
+            if verificarareaarthemis(i,listatorrereal, arthemis):
+                tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
+                listatiro.append(tiroarco)
+        time3 = 0
+    else:
+        time3 += janela.delta_time()
+    money, vidaarthemis = colisaoarcoarthemis(listatiro,arthemis,money,vidaarthemis)
+    movimentodotiro(listatiro, arthemis, janela)
+    return listatiro, time3, money, vidaarthemis
+
 
 def desenhartiro(listatiro):
     for j in listatiro:
         j.draw()
-
+def verificarareaarthemis(i,listatorrereal,arthemis):
+    if (i.y - 270 < arthemis.y < i.y + 270) or arthemis.y == i.y:
+        return True
+    return False
 def verificararea(i,listatorrereal,lista_scorpion):
     """
     calcular area em volta da torre e ver se o mob está na area
@@ -62,7 +79,7 @@ def verificararea(i,listatorrereal,lista_scorpion):
     return False
 
 def movimentodotiro(listatiro,lista_scorpion,janela):
-    veldotiroarco = 40
+    veldotiroarco = 20
     for i in listatiro:
         if 0 <= i.x:
             i.x += veldotiroarco * janela.delta_time() * -1
@@ -79,11 +96,10 @@ def colisaoarcoscorpion(listatiro,lista_scorpion,money, contadorscorpionmorto):
                 contadorscorpionmorto += 1
     return money, contadorscorpionmorto
 
-
 def colisaoarcoarthemis(listatiro,arthemis,money, vidaarthemis):
     for i in listatiro:
-        if arthemis.collided(i):
-                money += 100
-                vidaarthemis += 1
-                listatiro.remove(i)
+        if Collision.collided(i, arthemis):
+            money += 100
+            listatiro.remove(i)
+            vidaarthemis += 1
     return money, vidaarthemis

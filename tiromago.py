@@ -1,5 +1,7 @@
 from PPlay.animation import *
 from PPlay.sprite import *
+from PPlay.collision import *
+
 
 def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto):
     raiomago = Animation("imagens/raioTorre.png", 4)
@@ -48,6 +50,23 @@ def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,t
     money, contadorbesouromorto = colisaoraiomob(lista_raio_mago, lista_besouro, money, contadorbesouromorto)
     return lista_raio_mago, timemago3, money, contadorbesouromorto
 
+
+def raiomagoarthemis(arthemis,janela,lista_raio_mago,lista_torre_mago_real,time3,money, vidaarthemis):
+    raiomago = Animation("imagens/raioTorre.png", 4)
+    raiomago.set_sequence_time(0, 3, 80, True)
+    if time3 >= 4.89:
+        for i in lista_torre_mago_real:
+            if verificarareaarthemis(i,lista_torre_mago_real, arthemis):
+                print("chegou aqui")
+                raiomago.x,raiomago.y = [i.x-35, i.y+15]
+                lista_raio_mago.append(raiomago)
+        time3 = 0
+    else:
+        time3 += janela.delta_time()
+    money, vidaarthemis = colisaoarcoarthemis(lista_raio_mago,arthemis,money,vidaarthemis)
+    movimentodotiro(lista_raio_mago, arthemis, janela)
+    return lista_raio_mago, time3, money, vidaarthemis
+
 """"
 def desenhartiro(listatiro):
     for j in listatiro:
@@ -64,8 +83,13 @@ def verificararea(i,listatorrereal,lista_scorpion):
              return True
     return False
 
+def verificarareaarthemis(i,listatorrereal,arthemis):
+    if (i.y - 200 < arthemis.y < i.y + 200) or arthemis.y == i.y:
+        return True
+    return False
+
 def movimentodotiro(lista_raio_mago,lista_scorpion,janela):
-    veldotiroraio = 20
+    veldotiroraio = 10
     for i in lista_raio_mago:
         if 0 <= i.x:
             i.x += veldotiroraio * janela.delta_time() * -1
@@ -82,3 +106,10 @@ def colisaoraiomob(lista_raio_mago,lista_scorpion,money, contadorscorpionmorto):
                 contadorscorpionmorto += 1
     return money, contadorscorpionmorto
 
+def colisaoarcoarthemis(lista_raio_mago,arthemis,money, vidaarthemis):
+    for i in lista_raio_mago:
+        if Collision.collided(i, arthemis):
+            money += 100
+            lista_raio_mago.remove(i)
+            vidaarthemis += 1
+    return money, vidaarthemis
