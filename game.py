@@ -33,9 +33,16 @@ def cliquenatorre(teste,tempo,mouse,clique,money):
 
     return clique
 
-def game(janela):
-    fundo = GameImage("imagens/FundoFloresta.jpg")
-    janela.set_title("Defense of the Light")
+def game(janela,fase):
+    if fase == 1:
+        fundo = GameImage("imagens/FundoFloresta.jpg")
+        janela.set_title("Defense of the Light")
+    elif fase == 2:
+        fundo = GameImage("imagens/FundoDeserto.jpg")
+        janela.set_title("Defense of the Light")
+    elif fase == 3:
+        fundo = GameImage("imagens/FundoNeve.jpg")
+        janela.set_title("Defense of the Light")
 
     teclado = Window.get_keyboard()
     mouse = Window.get_mouse()
@@ -46,7 +53,7 @@ def game(janela):
     money = 500
     estrela = GameImage("imagens/star.png")
     estrela.x, estrela.y = [920, 70]
-    vida = 20
+    vida = 10 * fase
     coracao = Sprite("imagens/heart.png", 1)
     coracao.x, coracao.y = [920, 10]
     """
@@ -168,7 +175,7 @@ def game(janela):
         lista_torre_defesa_real, cliquedefesa, listavidastorresdefesa = movimentotorredefesa(lista_torre_defesa_real,cliquedefesa,mouse,lista_torre_defesa, torredefesa, listavidastorresdefesa)
         lista_torre_mago_real, cliquemago = movimentotorremago(lista_torre_mago_real,cliquemago,mouse,lista_torre_mago, torremago)
 
-        lista_scorpion, timescorpion, contadordescorpion = scorpionanimation(janela, lista_scorpion, timescorpion,contadordescorpion, roundgame)
+        lista_scorpion, timescorpion, contadordescorpion = scorpionanimation(janela, lista_scorpion, timescorpion,contadordescorpion, roundgame,fase)
         vida = scorpionmovimento(lista_scorpion,janela,vida)
         listatiro, time2, money, contadorscorpionmorto = tirotorrescorpion(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money, contadorscorpionmorto)
         ##mago
@@ -177,7 +184,7 @@ def game(janela):
         contadorscorpionmorto = colisaotorrescorpion(lista_torre_mago_real, lista_scorpion, contadorscorpionmorto)
         listavidastorresdefesa, money, contadorscorpionmorto = colisaotorredefesascorpion(lista_torre_defesa_real, lista_scorpion, listavidastorresdefesa, money, contadorscorpionmorto)
 
-        lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro, roundgame)
+        lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro, roundgame, fase)
         vida = besouromovimento(lista_besouro, janela, vida)
         listatiro, time2, money, contadorbesouromorto = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money, contadorbesouromorto)
         lista_raio_mago,timemago3, money, contadorbesouromorto = raiomagobesouro(lista_besouro, janela, lista_raio_mago, lista_torre_mago_real, timemago3, money, contadorbesouromorto)
@@ -186,7 +193,7 @@ def game(janela):
         listavidastorresdefesa, money, contadorbesouromorto = colisaotorredefesabesouro(lista_torre_defesa_real, lista_besouro, listavidastorresdefesa, money, contadorbesouromorto)
 
 
-        lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame)
+        lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase)
         vida = ogromovimento(lista_ogro, janela, vida)
         listatiro, timeogrotorre, money, contadorogromorto = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto)
         lista_raio_mago, timemago2, money, contadorogromorto = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto)
