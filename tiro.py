@@ -1,9 +1,9 @@
 from PPlay.collision import *
 from PPlay.sprite import *
 
-def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money, contadorscorpionmorto):
+def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money, contadorscorpionmorto, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
-    if time2 >= 4.89:
+    if time2 >= 4.89  - (upgradetorrearco * 0.89) :
         for i in listatorrereal:
             if verificararea(i,listatorrereal,lista_scorpion):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -16,9 +16,9 @@ def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2
     return listatiro, time2 , money, contadorscorpionmorto
 
 
-def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money, contadorogromorto,lista_vida_ogros):
+def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money, contadorogromorto,lista_vida_ogros, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
-    if timeogrotorre >= 4.89:
+    if timeogrotorre >= 4.89  - (upgradetorrearco * 0.89):
         for i in listatorrereal:
             if verificararea(i,listatorrereal,lista_ogro):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -31,9 +31,9 @@ def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre
     return listatiro, timeogrotorre , money , contadorogromorto, lista_vida_ogros
 
 
-def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,tiroarco, money, contadorbesouromorto):
+def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,tiroarco, money, contadorbesouromorto, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
-    if time3 >= 4.89:
+    if time3 >= 4.89 - (upgradetorrearco * 0.89):
         for i in listatorrereal:
             if verificararea(i,listatorrereal,lista_besouro):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -45,9 +45,9 @@ def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,t
     movimentodotiro(listatiro, lista_besouro, janela)
     return listatiro, time3, money, contadorbesouromorto
 
-def tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,time3,tiroarco, money, vidaarthemis):
+def tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,time3,tiroarco, money, vidaarthemis, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
-    if time3 >= 4.89:
+    if time3 >= 4.89 - (upgradetorrearco * 0.8):
         for i in listatorrereal:
             if verificarareaarthemis(i,listatorrereal, arthemis):
                 tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]

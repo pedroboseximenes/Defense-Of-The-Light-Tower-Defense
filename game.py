@@ -10,6 +10,7 @@ from torredefesa import *
 from torredefesamecanica import *
 from vitoriaouderrota import *
 from arthemis import *
+from upgrade import *
 from random import randint
 
 def cliquenatorre(teste,tempo,mouse,clique,money):
@@ -52,9 +53,24 @@ def game(janela,fase):
     precomago.x, precomago.y = [955,460]
     precodefesa = GameImage("imagens/crystal_1(1).png")
     precodefesa.x, precodefesa.y = [955,260]
+
+
+    precoupgradearco1 = GameImage("imagens/crystal_1(1).png")
+    precoupgradearco1.x, precoupgradearco1.y = [970, 565]
+    precoupgradearco2 = GameImage("imagens/crystal_1(1).png")
+    precoupgradearco2.x, precoupgradearco2.y = [970, 655]
+    precoupgrademago1 = GameImage("imagens/crystal_1(1).png")
+    precoupgrademago1.x, precoupgrademago1.y = [900, 565]
+    precoupgrademago2 = GameImage("imagens/crystal_1(1).png")
+    precoupgrademago2.x, precoupgrademago2.y = [900, 655]
+
     valoraqueiro = 100
     valormago = 200
     valordefesa = 500
+    valorupgradearco1 = 150
+    valorupgradearco2 = 300
+    valorupgrademago1 = 270
+    valorupgrademago2 = 400
 
 
     """
@@ -78,6 +94,25 @@ def game(janela,fase):
     botaomago.x, botaomago.y = [970,400]
     botaodefesa = GameImage("imagens/ico_2.png")
     botaodefesa.x, botaodefesa.y = [970, 200]
+
+    """
+    UPGRADES:
+    """
+    upgradetorrearco = 0
+    #usado p ver se o player quer mudar de arqueiro
+    iramudar = 0
+    iramudarmago = 0
+    upgradetorremago = 0
+    up = GameImage("imagens/up.png")
+    up.x,up.y = [970, 483]
+    upgradetorre = GameImage("imagens/upgradetest.png")
+    upgradetorre.x , upgradetorre.y = [970, 510]
+    upgradetorre2 = GameImage("imagens/upgrade2arco.png")
+    upgradetorre2.x , upgradetorre2.y = [970, 600]
+    upgrademago = GameImage("imagens/magoup.png")
+    upgrademago.x, upgrademago.y = [900, 510]
+    upgrademago2 = GameImage("imagens/magoup2.png")
+    upgrademago2.x, upgrademago2.y = [900, 600]
 
 
     clique = False
@@ -194,17 +229,17 @@ def game(janela,fase):
 
         lista_scorpion, timescorpion, contadordescorpion = scorpionanimation(janela, lista_scorpion, timescorpion,contadordescorpion, roundgame,fase)
         vida, contadorscorpionmorto = scorpionmovimento(lista_scorpion,janela,vida, contadorscorpionmorto)
-        listatiro, time2, money, contadorscorpionmorto = tirotorrescorpion(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money, contadorscorpionmorto)
+        listatiro, time2, money, contadorscorpionmorto = tirotorrescorpion(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money, contadorscorpionmorto, upgradetorrearco)
         ##mago
-        lista_raio_mago,timemago, money, contadorscorpionmorto = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto)
+        lista_raio_mago,timemago, money, contadorscorpionmorto = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto,upgradetorremago)
         contadorscorpionmorto =colisaotorrescorpion(listatorrereal, lista_scorpion, contadorscorpionmorto)
         contadorscorpionmorto = colisaotorrescorpion(lista_torre_mago_real, lista_scorpion, contadorscorpionmorto)
         listavidastorresdefesa, money, contadorscorpionmorto = colisaotorredefesascorpion(lista_torre_defesa_real, lista_scorpion, listavidastorresdefesa, money, contadorscorpionmorto)
 
         lista_besouro, timebesouro, contadordebesouro = besouroanimation(janela, lista_besouro, timebesouro,contadordebesouro, roundgame, fase)
         vida, contadorbesouromorto = besouromovimento(lista_besouro, janela, vida, contadorbesouromorto)
-        listatiro, time2, money, contadorbesouromorto = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money, contadorbesouromorto)
-        lista_raio_mago,timemago3, money, contadorbesouromorto = raiomagobesouro(lista_besouro, janela, lista_raio_mago, lista_torre_mago_real, timemago3, money, contadorbesouromorto)
+        listatiro, time2, money, contadorbesouromorto = tirotorrebesouro(torre, lista_besouro, listatorrereal, listatiro, janela, time2, tiroarco,money, contadorbesouromorto, upgradetorrearco)
+        lista_raio_mago,timemago3, money, contadorbesouromorto = raiomagobesouro(lista_besouro, janela, lista_raio_mago, lista_torre_mago_real, timemago3, money, contadorbesouromorto,upgradetorremago)
         contadorbesouromorto = colisaotorrebesouro(listatorrereal, lista_besouro, contadorbesouromorto)
         contadorbesouromorto = colisaotorrebesouro(lista_torre_mago_real, lista_besouro, contadorbesouromorto)
         listavidastorresdefesa, money, contadorbesouromorto = colisaotorredefesabesouro(lista_torre_defesa_real, lista_besouro, listavidastorresdefesa, money, contadorbesouromorto)
@@ -212,14 +247,18 @@ def game(janela,fase):
         if fase == 2 or fase == 3:
             lista_ogro, timeogro, contadordeogro, lista_vida_ogros = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase, lista_vida_ogros)
             vida, contadorogromorto = ogromovimento(lista_ogro, janela, vida, contadorogromorto)
-            listatiro, timeogrotorre, money, contadorogromorto, lista_vida_ogros = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto, lista_vida_ogros)
-            lista_raio_mago, timemago2, money, contadorogromorto, lista_vida_ogros = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto, lista_vida_ogros)
+            listatiro, timeogrotorre, money, contadorogromorto, lista_vida_ogros = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto, lista_vida_ogros, upgradetorrearco)
+            lista_raio_mago, timemago2, money, contadorogromorto, lista_vida_ogros = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto, lista_vida_ogros,upgradetorremago)
             contadorogromorto, lista_vida_ogros = colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto, lista_vida_ogros)
             contadorogromorto, lista_vida_ogros = colisaotorreogro(lista_torre_mago_real, lista_ogro, contadorogromorto, lista_vida_ogros)
             listavidastorresdefesa, money, contadorogromorto, lista_vida_ogros = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money, contadorogromorto, lista_vida_ogros)
 
             lista_ogro, contadorogromorto = verificarvidaogro(lista_vida_ogros, lista_ogro, contadorogromorto)
 
+        listatorrreal, money, iramudar, upgradetorrearco = upgradearco1(upgradetorre, mouse, janela, listatorrereal,money, iramudar, upgradetorrearco)
+        listatorrreal, money, iramudar, upgradetorrearco = upgradearco2(upgradetorre2, mouse, janela, listatorrereal, money, iramudar, upgradetorrearco)
+        lista_torre_mago_real, money, iramudarmago, upgradetorremago = upgrademago1(upgrademago, mouse, janela, lista_torre_mago_real, money, iramudarmago, upgradetorremago)
+        lista_torre_mago_real, money, iramudarmago, upgradetorremago = upgrademago_2(upgrademago2, mouse, janela, lista_torre_mago_real, money, iramudarmago, upgradetorremago)
 
         # desenhos:
 
@@ -264,8 +303,8 @@ def game(janela,fase):
             vidaarthemis = colisaotorrearthemis(listatorrereal, arthemis, vidaarthemis)
             vidaarthemis = colisaotorremagoarthemis(lista_torre_mago_real, arthemis, vidaarthemis)
             vidaarthemis = colisaotorredefesaarthemis(lista_torre_defesa_real, arthemis, vidaarthemis)
-            listatiro , timetorrearthemis, money, vidaarthemis = tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,timetorrearthemis,tiroarco, money, vidaarthemis)
-            lista_raio_mago, timemagoarthemis, money, vidaarthemis = raiomagoarthemis(arthemis, janela, lista_raio_mago, lista_torre_mago_real, timemagoarthemis, money, vidaarthemis)
+            listatiro , timetorrearthemis, money, vidaarthemis = tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,timetorrearthemis,tiroarco, money, vidaarthemis, upgradetorrearco)
+            lista_raio_mago, timemagoarthemis, money, vidaarthemis = raiomagoarthemis(arthemis, janela, lista_raio_mago, lista_torre_mago_real, timemagoarthemis, money, vidaarthemis, upgradetorremago)
 
             if vidaarthemis > 5:
                 arthemis = arthemisanimation(janela)
@@ -277,9 +316,12 @@ def game(janela,fase):
         botaoarqueiro.draw()
         botaomago.draw()
         botaodefesa.draw()
+
         precoarqueiro.draw()
         precomago.draw()
         precodefesa.draw()
+
+
         janela.draw_text(str(money), 990, 70, 50, (1, 0, 0), "Boulder", False, False)
         estrela.draw()
         janela.draw_text(str(vida), 1000, 10, 50, (1, 0, 0), "Boulder", False, False)
@@ -290,4 +332,23 @@ def game(janela,fase):
         janela.draw_text(str(valoraqueiro), 975, 360, 25, (1, 0, 0), "Boulder", False, False)
         janela.draw_text(str(valormago), 975, 460, 25, (1, 0, 0), "Boulder", False, False)
         janela.draw_text(str(valordefesa), 975, 260, 25, (1, 0, 0), "Boulder", False, False)
+
+        janela.draw_text(str(valorupgradearco1), 990, 565, 25, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str(valorupgradearco2), 990, 655, 25, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str(valorupgrademago1), 920, 565, 25, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str(valorupgrademago2), 920, 655, 25, (1, 0, 0), "Boulder", False, False)
+
+
+        up.draw()
+        upgradetorre.draw()
+        upgradetorre2.draw()
+        upgrademago.draw()
+        upgrademago2.draw()
+
+        precoupgradearco1.draw()
+        precoupgradearco2.draw()
+        precoupgrademago1.draw()
+        precoupgrademago2.draw()
+
+
         janela.update()

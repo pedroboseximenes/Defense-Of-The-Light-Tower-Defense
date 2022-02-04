@@ -6,7 +6,7 @@ global torre
 def movimentotorre(listatorre,mouse,tempo,clique,teste,torre,listatorrereal):
     if clique:
         torre2 = Animation("imagens/torrefeita.png",6)
-        torre2.set_sequence_time(0, 6, 1000, True)
+        torre2.set_sequence_time(0, 5, 1000, True)
         torre.x, torre.y = mouse.get_position()
         torre.x -= torre.width / 2
         torre.y -= torre.height / 2
