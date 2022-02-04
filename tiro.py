@@ -4,7 +4,7 @@ from PPlay.sprite import *
 def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2,tiroarco, money, contadorscorpionmorto, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
     for j in range(len(upgradetorrearco)):
-        if time2 >= 4.89  - (upgradetorrearco[j] * 0.3) :
+        if time2 >= 6.99  - (upgradetorrearco[j] * 0.05) :
             for i in listatorrereal:
                 if verificararea(i,listatorrereal,lista_scorpion):
                     tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -20,7 +20,7 @@ def tirotorrescorpion(torre,lista_scorpion,listatorrereal,listatiro,janela,time2
 def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre,tiroarco, money, contadorogromorto,lista_vida_ogros, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
     for j in range(len(upgradetorrearco)):
-        if timeogrotorre >= 4.89  - (upgradetorrearco[j] * 0.3):
+        if timeogrotorre >= 6.99  - (upgradetorrearco[j] * 0.05):
             for i in listatorrereal:
                 if verificararea(i,listatorrereal,lista_ogro):
                     tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]
@@ -36,7 +36,7 @@ def tirotorreogro(torre,lista_ogro,listatorrereal,listatiro,janela,timeogrotorre
 def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,tiroarco, money, contadorbesouromorto, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
     for j in range(len(upgradetorrearco)):
-        if time3 >= 7.89 - (upgradetorrearco[j] * 0.3):
+        if time3 >= 6.99 - (upgradetorrearco[j] * 0.05):
             for i in listatorrereal:
                 print(upgradetorrearco)
                 if verificararea(i,listatorrereal,lista_besouro):
@@ -52,7 +52,7 @@ def tirotorrebesouro(torre,lista_besouro,listatorrereal,listatiro,janela,time3,t
 def tirotorrearthemis(torre,arthemis,listatorrereal,listatiro,janela,time3,tiroarco, money, vidaarthemis, upgradetorrearco):
     tiroarco = Sprite("imagens/37.png", 1)
     for j in range(len(upgradetorrearco)):
-        if time3 >= 4.89 - (upgradetorrearco[j] * 0.3):
+        if time3 >= 6.99 - (upgradetorrearco[j] * 0.05):
             for i in listatorrereal:
                 if verificarareaarthemis(i,listatorrereal, arthemis):
                     tiroarco.x,tiroarco.y = [i.x + 45, i.y + 30]

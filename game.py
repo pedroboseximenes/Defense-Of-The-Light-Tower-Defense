@@ -167,6 +167,7 @@ def game(janela,fase):
 
 
     timebesouro = 0
+    hadokenvezes = 0
 
     while True:
         if not musica.is_playing():
@@ -320,14 +321,17 @@ def game(janela,fase):
                 mudancaarthemis += 1
             if mudancaarthemis == 3:
                 arthemisvivo = False
-        timearthemis += janela.delta_time()
-        if timearthemis > 8:
-            hadoken = arthemisbullet(janela, arthemis)
-            existehadoken = True
-            timearthemis = 0
-        if existehadoken:
-            hadoken.draw()
-            listatorrereal, lista_torre_mago_real, lista_torre_defesa_real, existehadoken = hadokencolisao(janela,listatorrereal,lista_torre_mago_real,lista_torre_defesa_real,hadoken)
+
+        if fase == 3 and hadokenvezes <= 3:
+            timearthemis += janela.delta_time()
+            if timearthemis > 8:
+                hadoken = arthemisbullet(janela, arthemis)
+                existehadoken = True
+                hadokenvezes += 1
+                timearthemis = 0
+            if existehadoken:
+                hadoken.draw()
+                listatorrereal, lista_torre_mago_real, lista_torre_defesa_real, existehadoken = hadokencolisao(janela,listatorrereal,lista_torre_mago_real,lista_torre_defesa_real,hadoken)
 
         botaoarqueiro.draw()
         botaomago.draw()
@@ -342,7 +346,7 @@ def game(janela,fase):
         estrela.draw()
         janela.draw_text(str(vida), 1000, 10, 50, (1, 0, 0), "Boulder", False, False)
         coracao.draw()
-        janela.draw_text(str(roundgame), janela.width/2, 10, 40, (1, 0, 0), "Boulder", False, False)
+        janela.draw_text(str(roundgame), janela.width/2, 10, 50, (1, 0, 0), "Boulder", False, False)
         janela.draw_text(str("ROUND:"), janela.width/2- 120, 15, 40, (1, 0, 0), "Boulder", False, False)
 
         janela.draw_text(str(valoraqueiro), 975, 360, 25, (1, 0, 0), "Boulder", False, False)
