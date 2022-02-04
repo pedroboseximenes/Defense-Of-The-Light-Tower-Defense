@@ -6,12 +6,13 @@ from PPlay.collision import *
 def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto, upgradetorremago):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
-    if timemago >= 4.89 - (upgradetorremago * 0.89):
-        for i in lista_torre_mago_real:
-            if verificararea(i,lista_torre_mago_real,lista_scorpion):
-                raiomago.x,raiomago.y = [i.x-35, i.y+15]
-                lista_raio_mago.append(raiomago)
-        timemago = 0
+    for j in range(len(upgradetorremago)):
+        if timemago >= 4.89 - (upgradetorremago[j] * 0.22):
+            for i in lista_torre_mago_real:
+                if verificararea(i,lista_torre_mago_real,lista_scorpion):
+                    raiomago.x,raiomago.y = [i.x-35, i.y+15]
+                    lista_raio_mago.append(raiomago)
+            timemago = 0
     else:
         timemago += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_scorpion, janela, upgradetorremago)
@@ -22,12 +23,13 @@ def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real
 def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto, lista_vida_ogros, upgradetorremago):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
-    if timemago2 >= 4.89 -(upgradetorremago * 0.89):
-        for i in lista_torre_mago_real:
-            if verificararea(i, lista_torre_mago_real, lista_ogro):
-                raiomago.x, raiomago.y = [i.x-35, i.y+15]
-                lista_raio_mago.append(raiomago)
-        timemago2 = 0
+    for j in range(len(upgradetorremago)):
+        if timemago2 >= 4.89 - (upgradetorremago[j] * 0.22):
+            for i in lista_torre_mago_real:
+                if verificararea(i, lista_torre_mago_real, lista_ogro):
+                    raiomago.x, raiomago.y = [i.x-35, i.y+15]
+                    lista_raio_mago.append(raiomago)
+            timemago2 = 0
     else:
         timemago2 += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_ogro, janela, upgradetorremago)
@@ -38,12 +40,13 @@ def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemag
 def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,timemago3,money, contadorbesouromorto, upgradetorremago):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
-    if timemago3 >= 4.89 - (upgradetorremago * 0.89):
-        for i in lista_torre_mago_real:
-            if verificararea(i, lista_torre_mago_real, lista_besouro):
-                raiomago.x, raiomago.y = [i.x-35, i.y+15]
-                lista_raio_mago.append(raiomago)
-        timemago3 = 0
+    for j in range(len(upgradetorremago)):
+        if timemago3 >= 4.89 - (upgradetorremago[j] * 0.22):
+            for i in lista_torre_mago_real:
+               if verificararea(i, lista_torre_mago_real, lista_besouro):
+                    raiomago.x, raiomago.y = [i.x-35, i.y+15]
+                    lista_raio_mago.append(raiomago)
+            timemago3 = 0
     else:
         timemago3 += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_besouro, janela, upgradetorremago)
@@ -54,12 +57,13 @@ def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,t
 def raiomagoarthemis(arthemis,janela,lista_raio_mago,lista_torre_mago_real,time3,money, vidaarthemis, upgradetorremago):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
-    if time3 >= 4.89 - (upgradetorremago * 0.89):
-        for i in lista_torre_mago_real:
-            if verificarareaarthemis(i,lista_torre_mago_real, arthemis):
-                raiomago.x,raiomago.y = [i.x-35, i.y+15]
-                lista_raio_mago.append(raiomago)
-        time3 = 0
+    for j in range(len(upgradetorremago)):
+        if time3 >= 4.89 - (upgradetorremago[j] * 0.22):
+            for i in lista_torre_mago_real:
+                if verificarareaarthemis(i,lista_torre_mago_real, arthemis):
+                    raiomago.x,raiomago.y = [i.x-35, i.y+15]
+                    lista_raio_mago.append(raiomago)
+            time3 = 0
     else:
         time3 += janela.delta_time()
     money, vidaarthemis = colisaoarcoarthemis(lista_raio_mago,arthemis,money,vidaarthemis)
@@ -88,12 +92,13 @@ def verificarareaarthemis(i,listatorrereal,arthemis):
     return False
 
 def movimentodotiro(lista_raio_mago,lista_scorpion,janela, upgradetorremago):
-    veldotiroraio = 10 +  (upgradetorremago * 4)
-    for i in lista_raio_mago:
-        if 0 <= i.x:
-            i.x += veldotiroraio * janela.delta_time() * -1
-        if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
-            lista_raio_mago.remove(i)
+    for j in range (len(upgradetorremago)):
+        veldotiroraio = 10 +(upgradetorremago[j] * 4)
+        for i in lista_raio_mago:
+            if 0 <= i.x:
+                i.x += veldotiroraio * janela.delta_time() * -1
+            if i.x >= janela.width - i.width or i.x < 0 or i.y >= janela.height - i.height or i.y < 0:
+                lista_raio_mago.remove(i)
 
 def colisaoraiomob(lista_raio_mago,lista_scorpion,money, contadorscorpionmorto):
     for i in lista_raio_mago:

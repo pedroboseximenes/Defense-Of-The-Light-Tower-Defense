@@ -1,5 +1,6 @@
 from PPlay.animation import *
 from random import *
+from PPlay.collision import *
 def arthemisanimation(janela):
     arthemis = Animation("imagens/ARTHEMIS.png", 20, True)
     arthemis.set_sequence_time(0, 19, 50, True)
@@ -46,3 +47,26 @@ def colisaotorredefesaarthemis(lista_torre_defesa_real, arthemis, vidaarthemis):
             lista_torre_defesa_real.remove(i)
             vidaarthemis += 1
     return vidaarthemis
+
+def arthemisbullet(janela, arthemis):
+    hadoken = Animation("imagens/hadoken.png", 1)
+    hadoken.x = arthemis.x +60
+    hadoken.y = arthemis.y +60
+    return hadoken
+
+def hadokencolisao(janela, listatorrereal, torre_mago_real, torre_defesa_real, hadoken):
+    hadoken.x += 300 * janela.delta_time()
+    a = True
+    for i in listatorrereal:
+        if i.collided(hadoken):
+            listatorrereal.remove(i)
+            a = False
+    for i in torre_mago_real:
+        if i.collided(hadoken):
+            torre_mago_real.remove(i)
+            a = False
+    for i in torre_defesa_real:
+        if i.collided(hadoken):
+            torre_defesa_real.remove(i)
+            a = False
+    return listatorrereal, torre_mago_real, torre_defesa_real,  a

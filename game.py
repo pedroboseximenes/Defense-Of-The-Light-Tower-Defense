@@ -98,11 +98,13 @@ def game(janela,fase):
     """
     UPGRADES:
     """
-    upgradetorrearco = 0
+    upgradetorrearco = []
     #usado p ver se o player quer mudar de arqueiro
-    iramudar = 0
-    iramudarmago = 0
-    upgradetorremago = 0
+    iramudararco1 = 0
+    iramudararco2 = 0
+    iramudarmago1 = 0
+    iramudarmago2 = 0
+    upgradetorremago = []
     up = GameImage("imagens/up.png")
     up.x,up.y = [970, 483]
     upgradetorre = GameImage("imagens/upgradetest.png")
@@ -142,6 +144,8 @@ def game(janela,fase):
     arthemisvivo = True
     mudancaarthemis = 0
     arthemis = arthemisanimation(janela)
+    timearthemis = 0
+    existehadoken = False
 
     timeogro = 0
     timescorpion = 0
@@ -178,10 +182,12 @@ def game(janela,fase):
         """
         if (mouse.is_over_object(botaoarqueiro) and mouse.is_button_pressed(1) and tempo >= 0.75 and clique == False and money >= 100):
             clique = True
+            upgradetorrearco.append(0)
             money -= 100
         ""
         if (mouse.is_over_object(botaomago) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquemago == False and money >= 200):
             cliquemago = True
+            upgradetorremago.append(0)
             money -= 200
         if (mouse.is_over_object(botaodefesa) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquedefesa == False and money >= 500):
             cliquedefesa = True
@@ -223,7 +229,12 @@ def game(janela,fase):
                 contadorogromorto = 0
                 contadorscorpionmorto = 0
 
-        listatorrreal, clique = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal)
+        listatorrreal, money, iramudararco1, upgradetorrearco = upgradearco1(upgradetorre, mouse, janela, listatorrereal,money, iramudararco1, upgradetorrearco)
+        listatorrreal, money, iramudararco2, upgradetorrearco = upgradearco2(upgradetorre2, mouse, janela, listatorrereal,money, iramudararco2, upgradetorrearco)
+        lista_torre_mago_real, money, iramudarmago1, upgradetorremago = upgrademago1(upgrademago, mouse, janela,lista_torre_mago_real, money,iramudarmago1, upgradetorremago)
+        lista_torre_mago_real, money, iramudarmago2, upgradetorremago = upgrademago_2(upgrademago2, mouse, janela,lista_torre_mago_real, money,iramudarmago2, upgradetorremago)
+
+        listatorrreal, clique,upgradetorrearco  = movimentotorre(listatorre, mouse, tempo, clique,botaoarqueiro ,torre,listatorrereal,upgradetorrearco)
         lista_torre_defesa_real, cliquedefesa, listavidastorresdefesa = movimentotorredefesa(lista_torre_defesa_real,cliquedefesa,mouse,lista_torre_defesa, torredefesa, listavidastorresdefesa)
         lista_torre_mago_real, cliquemago = movimentotorremago(lista_torre_mago_real,cliquemago,mouse,lista_torre_mago, torremago)
 
@@ -255,10 +266,7 @@ def game(janela,fase):
 
             lista_ogro, contadorogromorto = verificarvidaogro(lista_vida_ogros, lista_ogro, contadorogromorto)
 
-        listatorrreal, money, iramudar, upgradetorrearco = upgradearco1(upgradetorre, mouse, janela, listatorrereal,money, iramudar, upgradetorrearco)
-        listatorrreal, money, iramudar, upgradetorrearco = upgradearco2(upgradetorre2, mouse, janela, listatorrereal, money, iramudar, upgradetorrearco)
-        lista_torre_mago_real, money, iramudarmago, upgradetorremago = upgrademago1(upgrademago, mouse, janela, lista_torre_mago_real, money, iramudarmago, upgradetorremago)
-        lista_torre_mago_real, money, iramudarmago, upgradetorremago = upgrademago_2(upgrademago2, mouse, janela, lista_torre_mago_real, money, iramudarmago, upgradetorremago)
+
 
         # desenhos:
 
@@ -312,6 +320,14 @@ def game(janela,fase):
                 mudancaarthemis += 1
             if mudancaarthemis == 3:
                 arthemisvivo = False
+        timearthemis += janela.delta_time()
+        if timearthemis > 8:
+            hadoken = arthemisbullet(janela, arthemis)
+            existehadoken = True
+            timearthemis = 0
+        if existehadoken:
+            hadoken.draw()
+            listatorrereal, lista_torre_mago_real, lista_torre_defesa_real, existehadoken = hadokencolisao(janela,listatorrereal,lista_torre_mago_real,lista_torre_defesa_real,hadoken)
 
         botaoarqueiro.draw()
         botaomago.draw()

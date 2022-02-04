@@ -3,7 +3,7 @@ from PPlay.gameimage import *
 from PPlay.sprite import *
 from PPlay.animation import *
 global torre
-def movimentotorre(listatorre,mouse,tempo,clique,teste,torre,listatorrereal):
+def movimentotorre(listatorre,mouse,tempo,clique,teste,torre,listatorrereal, upgradetorrearco):
     if clique:
         torre2 = Animation("imagens/torrefeita.png",6)
         torre2.set_sequence_time(0, 5, 1000, True)
@@ -11,9 +11,10 @@ def movimentotorre(listatorre,mouse,tempo,clique,teste,torre,listatorrereal):
         torre.x -= torre.width / 2
         torre.y -= torre.height / 2
         listatorre.append(torre)
+
         if (mouse.is_button_pressed(3) and mouse.is_over_area):
             torre2.x = torre.x
             torre2.y = torre.y
             listatorrereal.append(torre2)
             clique = False
-    return listatorrereal,clique
+    return listatorrereal,clique, upgradetorrearco
