@@ -1,6 +1,7 @@
 from PPlay.window import *
 from PPlay.gameimage import *
 from PPlay.sprite import *
+from PPlay.sound import *
 from game import *
 def fases(janela, mouse, teclado):
     fundo = GameImage("imagens/game_background_1.jpg")
@@ -80,6 +81,8 @@ def menu():
     mouse = Window.get_mouse()
     tempo = 0
 
+    musica = Sound("imagens/Original.ogg")
+
     #coords:
     information_button.x, information_button.y = [980,10]
     jogar_button.x, jogar_button.y  = [janela.width/2 - jogar_button.width/2 - 200,  janela.height/2 - 50]
@@ -94,20 +97,26 @@ def menu():
         #mecanicas:
         if (mouse.is_button_pressed(1)):
             if (mouse.is_over_object(fases_button)):
+                musica.stop()
                 fases(janela,mouse,teclado)
         if (mouse.is_button_pressed(1)):
             if (mouse.is_over_object(jogar_button)):
                 fase = 1
+                musica.stop()
                 game(janela,fase)
         if (mouse.is_button_pressed(1)):
             if (mouse.is_over_object(close_button)):
                 break
         if (mouse.is_button_pressed(1)):
             if (mouse.is_over_object(historia_button)):
+                musica.stop()
                 janela = trailer(janela,teclado)
         if (mouse.is_button_pressed(1)):
             if (mouse.is_over_object(information_button)):
                 tutorial(janela,fundo, teclado)
+        if not musica.is_playing():
+            musica.set_volume(100)
+            musica.play()
         #desenhos:
         fundo.draw()
         logo.draw()

@@ -1,6 +1,6 @@
 from PPlay.animation import *
 from random import *
-def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame,fase):
+def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame,fase, lista_vida_ogros):
     if fase == 1:
         if time >= 10:
             if contadordeogro < 3 + roundgame:
@@ -19,12 +19,14 @@ def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame,fase):
                 if t == 4:
                     ogro.x = 3
                     ogro.y = 680
+                vidaogro = 2
+                lista_vida_ogros.append(vidaogro)
                 lista_ogro.append(ogro)
                 contadordeogro += 1
             time = 0
         else:
             time += janela.delta_time()
-        return lista_ogro, time, contadordeogro
+        return lista_ogro, time, contadordeogro, lista_vida_ogros
     elif fase == 2:
         if time >= 10:
             if contadordeogro < 3 * roundgame:
@@ -43,12 +45,14 @@ def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame,fase):
                 if t == 4:
                     ogro.x = 3
                     ogro.y = 600
+                vidaogro = 2
+                lista_vida_ogros.append(vidaogro)
                 lista_ogro.append(ogro)
                 contadordeogro += 1
             time = 0
         else:
             time += janela.delta_time()
-        return lista_ogro, time, contadordeogro
+        return lista_ogro, time, contadordeogro, lista_vida_ogros
     elif fase == 3:
         if time >= 6:
             if contadordeogro < 3 * roundgame:
@@ -78,13 +82,14 @@ def ogroanimation(janela,lista_ogro,time,contadordeogro, roundgame,fase):
                 if t == 6:
                     ogro.x = 3
                     ogro.y = 710
-
+                vidaogro = 2
+                lista_vida_ogros.append(vidaogro)
                 lista_ogro.append(ogro)
                 contadordeogro += 1
             time = 0
         else:
             time += janela.delta_time()
-        return lista_ogro, time, contadordeogro
+        return lista_ogro, time, contadordeogro, lista_vida_ogros
 
 def ogromovimento(lista_ogro,janela,vida, contadorogromorto):
     for ogro in lista_ogro:
@@ -97,11 +102,23 @@ def ogromovimento(lista_ogro,janela,vida, contadorogromorto):
             contadorogromorto += 1
     return vida, contadorogromorto
 
-def colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto):
+def colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto,lista_vida_ogros):
     for i in listatorrereal:
-        for j in lista_ogro:
-            if j.collided(i):
-                listatorrereal.remove(i)
-                lista_ogro.remove(j)
-                contadorogromorto += 1
-    return contadorogromorto
+        for j in range (len(lista_ogro)):
+            for k in range(len(lista_vida_ogros)):
+                if k == j:
+                    if lista_ogro[j].collided(i):
+                        listatorrereal.remove(i)
+                        lista_vida_ogros[j] -= 1
+                        #contadorogromorto += 1
+    return contadorogromorto, lista_vida_ogros
+
+def verificarvidaogro(lista_vida_ogros, lista_ogro, contadorogromorto):
+    for j in range(len(lista_ogro)):
+        for i in range(len(lista_vida_ogros)):
+            if i == j :
+                if lista_vida_ogros[i] <= 0:
+                    lista_ogro.remove(lista_ogro[j])
+                    lista_vida_ogros.remove(lista_vida_ogros[j])
+                    contadorogromorto += 1
+    return lista_ogro, contadorogromorto

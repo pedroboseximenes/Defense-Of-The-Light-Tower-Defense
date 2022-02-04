@@ -19,7 +19,7 @@ def raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real
     return lista_raio_mago, timemago , money, contadorscorpionmorto
 
 
-def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto):
+def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto, lista_vida_ogros):
     raiomago = Animation("imagens/raioTorre.png", 4)
     raiomago.set_sequence_time(0, 3, 80, True)
     if timemago2 >= 4.89:
@@ -31,8 +31,8 @@ def raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemag
     else:
         timemago2 += janela.delta_time()
     movimentodotiro(lista_raio_mago, lista_ogro, janela)
-    money, contadorogromorto = colisaoraiomob(lista_raio_mago, lista_ogro, money,contadorogromorto)
-    return lista_raio_mago, timemago2, money, contadorogromorto
+    money, contadorogromorto, lista_vida_ogros = colisaomagoogro(lista_raio_mago,lista_ogro,money, contadorogromorto, lista_vida_ogros)
+    return lista_raio_mago, timemago2, money, contadorogromorto, lista_vida_ogros
 
 
 def raiomagobesouro(lista_besouro,janela,lista_raio_mago,lista_torre_mago_real,timemago3,money, contadorbesouromorto):
@@ -112,3 +112,13 @@ def colisaoarcoarthemis(lista_raio_mago,arthemis,money, vidaarthemis):
             lista_raio_mago.remove(i)
             vidaarthemis += 1
     return money, vidaarthemis
+
+def colisaomagoogro(lista_raio_mago,lista_scorpion,money, contadorscorpionmorto, lista_vida_ogros):
+    for i in lista_raio_mago:
+        for j in lista_scorpion:
+            if i.collided(j):
+                money += 150
+                lista_scorpion.remove(j)
+                lista_raio_mago.remove(i)
+                contadorscorpionmorto += 1
+    return money, contadorscorpionmorto, lista_vida_ogros

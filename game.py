@@ -5,6 +5,7 @@ from besouro import *
 from ogro import *
 from torremago import *
 from tiromago import *
+from PPlay.sound import *
 from torredefesa import *
 from torredefesamecanica import *
 from vitoriaouderrota import *
@@ -20,12 +21,15 @@ def game(janela,fase):
     if fase == 1:
         fundo = GameImage("imagens/FundoFloresta.jpg")
         janela.set_title("Defense of the Light")
+        musica = Sound("imagens/Fantasy.ogg")
     elif fase == 2:
         fundo = GameImage("imagens/FundoDeserto.jpg")
         janela.set_title("Defense of the Light")
+        musica = Sound("imagens/Fantasy.ogg")
     elif fase == 3:
         fundo = GameImage("imagens/FundoNeve.jpg")
         janela.set_title("Defense of the Light")
+        musica = Sound("imagens/Halloween.ogg")
 
     teclado = Window.get_keyboard()
     mouse = Window.get_mouse()
@@ -90,6 +94,7 @@ def game(janela,fase):
     lista_scorpion = []
     lista_besouro = []
     lista_ogro = []
+    lista_vida_ogros = []
 
     contadordebesouro = 0
     contadordeogro = 0
@@ -125,9 +130,13 @@ def game(janela,fase):
     timebesouro = 0
 
     while True:
+        if not musica.is_playing():
+            musica.set_volume(100)
+            musica.play()
         tempo += janela.delta_time()
         # mecanicas:
         if (teclado.key_pressed("ESC")):
+            musica.stop()
             break
         """
         vendo se ta sendo click e se te money
@@ -139,16 +148,18 @@ def game(janela,fase):
         if (mouse.is_over_object(botaomago) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquemago == False and money >= 200):
             cliquemago = True
             money -= 200
-        if (mouse.is_over_object(botaodefesa) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquedefesa == False and money >= 200):
+        if (mouse.is_over_object(botaodefesa) and mouse.is_button_pressed(1) and tempo >= 0.75 and cliquedefesa == False and money >= 500):
             cliquedefesa = True
             money -= 500
         """
         vendo se tem vida ainda
         """
         if vida <= 0:
+            musica.stop()
             perdeu(janela, mouse)
             break
         if roundgame == 4:
+            musica.stop()
             ganhar(janela, mouse)
             break
         if fase == 1:
@@ -199,13 +210,15 @@ def game(janela,fase):
         listavidastorresdefesa, money, contadorbesouromorto = colisaotorredefesabesouro(lista_torre_defesa_real, lista_besouro, listavidastorresdefesa, money, contadorbesouromorto)
 
         if fase == 2 or fase == 3:
-            lista_ogro, timeogro, contadordeogro = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase)
+            lista_ogro, timeogro, contadordeogro, lista_vida_ogros = ogroanimation(janela, lista_ogro, timeogro, contadordeogro, roundgame,fase, lista_vida_ogros)
             vida, contadorogromorto = ogromovimento(lista_ogro, janela, vida, contadorogromorto)
-            listatiro, timeogrotorre, money, contadorogromorto = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto)
-            lista_raio_mago, timemago2, money, contadorogromorto = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto)
-            contadorogromorto = colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto)
-            contadorogromorto = colisaotorreogro(lista_torre_mago_real, lista_ogro, contadorogromorto)
-            listavidastorresdefesa, money, contadorogromorto = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money, contadorogromorto)
+            listatiro, timeogrotorre, money, contadorogromorto, lista_vida_ogros = tirotorreogro(torre, lista_ogro, listatorrereal, listatiro, janela, timeogrotorre, tiroarco, money, contadorogromorto, lista_vida_ogros)
+            lista_raio_mago, timemago2, money, contadorogromorto, lista_vida_ogros = raiomagoogro(lista_ogro,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorogromorto, lista_vida_ogros)
+            contadorogromorto, lista_vida_ogros = colisaotorreogro(listatorrereal, lista_ogro, contadorogromorto, lista_vida_ogros)
+            contadorogromorto, lista_vida_ogros = colisaotorreogro(lista_torre_mago_real, lista_ogro, contadorogromorto, lista_vida_ogros)
+            listavidastorresdefesa, money, contadorogromorto, lista_vida_ogros = colisaotorredefesaogro(lista_torre_defesa_real, lista_ogro, listavidastorresdefesa, money, contadorogromorto, lista_vida_ogros)
+
+            lista_ogro, contadorogromorto = verificarvidaogro(lista_vida_ogros, lista_ogro, contadorogromorto)
 
 
         # desenhos:
