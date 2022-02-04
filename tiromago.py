@@ -57,7 +57,6 @@ def raiomagoarthemis(arthemis,janela,lista_raio_mago,lista_torre_mago_real,time3
     if time3 >= 4.89:
         for i in lista_torre_mago_real:
             if verificarareaarthemis(i,lista_torre_mago_real, arthemis):
-                print("chegou aqui")
                 raiomago.x,raiomago.y = [i.x-35, i.y+15]
                 lista_raio_mago.append(raiomago)
         time3 = 0

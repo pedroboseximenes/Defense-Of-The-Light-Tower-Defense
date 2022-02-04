@@ -114,6 +114,6 @@ def menu():
         jogar_button.draw()
         historia_button.draw()
         close_button.draw()
-        information_button.draw()
+        #information_button.draw()
         fases_button.draw()
         janela.update()

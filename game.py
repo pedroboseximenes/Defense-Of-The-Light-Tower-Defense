@@ -185,7 +185,7 @@ def game(janela,fase):
         vida, contadorscorpionmorto = scorpionmovimento(lista_scorpion,janela,vida, contadorscorpionmorto)
         listatiro, time2, money, contadorscorpionmorto = tirotorrescorpion(torre, lista_scorpion, listatorrereal, listatiro, janela, time2 ,tiroarco, money, contadorscorpionmorto)
         ##mago
-        lista_raio_mago,timemago, money, contadorscorpionmorto = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago2,money, contadorscorpionmorto)
+        lista_raio_mago,timemago, money, contadorscorpionmorto = raiomagoscorpion(lista_scorpion,janela,lista_raio_mago,lista_torre_mago_real,timemago,money, contadorscorpionmorto)
         contadorscorpionmorto =colisaotorrescorpion(listatorrereal, lista_scorpion, contadorscorpionmorto)
         contadorscorpionmorto = colisaotorrescorpion(lista_torre_mago_real, lista_scorpion, contadorscorpionmorto)
         listavidastorresdefesa, money, contadorscorpionmorto = colisaotorredefesascorpion(lista_torre_defesa_real, lista_scorpion, listavidastorresdefesa, money, contadorscorpionmorto)
